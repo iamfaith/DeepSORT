@@ -3,3 +3,5 @@ onnxruntime-*
 *.txt
 build*
 *.onnx
+*.png
+*.jpg

@@ -2,7 +2,9 @@
 #include <iostream>
 #include <onnxruntime_cxx_api.h>
 #include <fstream>
+#ifdef EMBED_MODEL
 #include "onnx.mem.h"
+#endif
 #include "utils.h"
 
 // // 定义一个函数，用于解压缩字符串
@@ -73,7 +75,7 @@ int main(void)
     // }
 
 
-
+#ifdef EMBED_MODEL
     std::string array = decode(model_data);
 
     std::cout << model_data_length <<  " " << array.size() << "\n"; 
@@ -86,5 +88,6 @@ int main(void)
     // 创建一个 onnxruntime 的会话对象，传入环境，模型数据，模型长度和会话选项
     Ort::Session session(env, array.data(), model_data_length, session_options);  // c_str 会加后缀
     // Ort::Session session(env, array, model_data_length, session_options);
+#endif
     return 0;
 }

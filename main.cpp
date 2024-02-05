@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
     std::vector<detect_result> results;
     int num_frames = 0;
 
-    cv::VideoWriter video("out.avi", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(1920, 1080));
+    // cv::VideoWriter video("out.avi", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(1920, 1080));
 
     while (true)
     {
@@ -191,6 +191,6 @@ int main(int argc, char *argv[])
         results.clear();
     }
     capture.release();
-    video.release();
+    // video.release();
     cv::destroyAllWindows();
 }

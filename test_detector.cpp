@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     detector->init(k_detect_model_path);
 
     std::vector<detect_result> results;
-    cv::Mat frame = cv::imread("/home/faith/coreml2onnx/images/11.jpg");
+    cv::Mat frame = cv::imread(argv[1]);
     //Second/Millisecond/Microsecond  秒s/毫秒ms/微秒us
     auto start = std::chrono::system_clock::now();
     detector->detect(frame, results);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     detector->draw_frame(frame, results);
 
-    cv::imshow("YOLOv5-6.x", frame);
+    // cv::imshow("YOLOv5-6.x", frame);
 
     std::string output_file = cv::format("out%d.jpg", 1);
     cv::imwrite(output_file, frame);

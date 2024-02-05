@@ -79,7 +79,7 @@ void YOLOv5Detector::init(std::string onnxpath)
 
 
 
-    std::string file="/home/faith/DeepSORT/coco_80_labels_list.txt";
+    std::string file="coco_80_labels_list.txt";
     std::ifstream ifs(file);
     if (!ifs.is_open())
         CV_Error(cv::Error::StsError, "File " + file + " not found");

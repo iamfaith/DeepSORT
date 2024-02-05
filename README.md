@@ -59,6 +59,7 @@ sudo apt-get install libeigen3-dev
 ```
 
 /home/faith/miniconda3/bin/cmake ..
+docker run --rm -t -i -v `pwd`:/workspace ubuntu bash
 
 onnxruntime，可以直接解压使用，无需编译
 目标检测模型下载地址

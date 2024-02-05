@@ -12,7 +12,9 @@
 #include <sstream>
 
 #include "utils.h"
+#ifdef EMBED_MODEL
 #include "onnx.mem.h"
+#endif
 class detect_result
 {
 public:
@@ -34,10 +36,12 @@ public:
         // Ort::Session session_tmp{env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr}};
         // session_ = std::move(session_tmp);
 
-        // this->s = new Ort::Session(env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr});
+
 #ifdef EMBED_MODEL
         std::string array = decode(model_data);
         this->s = new Ort::Session(env, array.data(), model_data_length, Ort::SessionOptions{nullptr});
+#else
+        this->s = new Ort::Session(env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr});
 #endif
         // std::unique_ptr<Ort::Session> s = std::make_unique<Ort::Session>(env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr});
     }
