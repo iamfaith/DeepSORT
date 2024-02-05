@@ -8,7 +8,7 @@
 
 #include <cstddef>
 #include <vector>
-#include <numeric> // accumulate
+
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -50,27 +50,3 @@ typedef struct t{
 //linear_assignment:
 typedef Eigen::Matrix<float, -1, -1, Eigen::RowMajor> DYNAMICM;
 
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &v)
-{
-    os << "[";
-    for (int i = 0; i < v.size(); ++i)
-    {
-        os << v[i];
-        if (i != v.size() - 1)
-        {
-            os << ", ";
-        }
-    }
-    os << "]";
-    return os;
-}
-
-
-
-template <typename T>
-T vectorProduct(const std::vector<T> &v)
-{
-    return std::accumulate(v.begin(), v.end(), 1, std::multiplies<T>());
-}

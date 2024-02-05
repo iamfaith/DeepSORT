@@ -15,7 +15,6 @@ set(ONNXRUNTIME_DIR "/home/faith/onnxruntime/build")
 
 # include_directories("${ONNXRUNTIME_DIR}/include"
 #     )
-include_directories(${CMAKE_SOURCE_DIR}/onnx_runtime_include)
 find_library(ONNXRUNTIME_LIBRARY onnxruntime ${ONNXRUNTIME_DIR})
 
 
@@ -28,6 +27,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/tracker/bytetrack/include
     ${CMAKE_SOURCE_DIR}/detector/YOLOv5/include
 
+    ${CMAKE_SOURCE_DIR}/onnx_runtime_include
+    ${CMAKE_SOURCE_DIR}/include
     )
 
 

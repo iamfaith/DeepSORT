@@ -15,6 +15,8 @@
 #include "tracker.h"     //deepsort
 // Deep SORT parameter
 
+#include "utils.h"
+
 const int nn_budget = 100;
 const float max_cosine_distance = 0.2;
 
@@ -170,12 +172,15 @@ int main(int argc, char *argv[])
         auto detect_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count(); // ms
         std::cout << classes.size() << ":" << results.size() << ":" << num_frames << std::endl;
 
+        uint64_t t1 = time_get();
         cv::Mat deepSortFrame = frame.clone();
         test_deepsort(deepSortFrame, results, mytracker);
-
+        uint64_t t2 = time_get();
         cv::Mat byteTrackFrame = frame.clone();
         test_bytetrack(byteTrackFrame, results, bytetracker);
+        uint64_t t3 = time_get();
 
+        printf("DeepSORT[%12.3f]ms  bytetrack[%12.3f]ms\n", (double)(t2 - t1) / 1000.0f / 1000.0f, (double)(t3 - t2) / 1000.0f / 1000.0f);
         // video.write(frame);
 
         if (cv::waitKey(30) == 27) // Wait for 'esc' key press to exit

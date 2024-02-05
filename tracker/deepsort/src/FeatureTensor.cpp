@@ -7,6 +7,7 @@
 //#include "globalconfig.h"
 #include "FeatureTensor.h"
 #include <iostream>
+#include "utils.h"
 
 FeatureTensor *FeatureTensor::instance = NULL;
 
