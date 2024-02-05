@@ -58,6 +58,8 @@ Eigen3安装
 sudo apt-get install libeigen3-dev
 ```
 
+/home/faith/miniconda3/bin/cmake ..
+
 onnxruntime，可以直接解压使用，无需编译
 目标检测模型下载地址
 

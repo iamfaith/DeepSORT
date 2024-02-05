@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <numeric> // accumulate
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -15,8 +16,8 @@
 
 const int k_feature_dim=512;//feature dim
 
-const std::string  k_feature_model_path ="./feature.onnx";
-const std::string  k_detect_model_path ="./yolov5s.onnx";
+const std::string  k_feature_model_path ="/home/faith/DeepSORT/feature.onnx";
+const std::string  k_detect_model_path ="/home/faith/DeepSORT/yolov5s.onnx";
 
 
 typedef Eigen::Matrix<float, 1, 4, Eigen::RowMajor> DETECTBOX;
@@ -50,4 +51,26 @@ typedef struct t{
 typedef Eigen::Matrix<float, -1, -1, Eigen::RowMajor> DYNAMICM;
 
 
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const std::vector<T> &v)
+{
+    os << "[";
+    for (int i = 0; i < v.size(); ++i)
+    {
+        os << v[i];
+        if (i != v.size() - 1)
+        {
+            os << ", ";
+        }
+    }
+    os << "]";
+    return os;
+}
 
+
+
+template <typename T>
+T vectorProduct(const std::vector<T> &v)
+{
+    return std::accumulate(v.begin(), v.end(), 1, std::multiplies<T>());
+}

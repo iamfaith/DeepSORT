@@ -39,7 +39,8 @@ void test_deepsort(cv::Mat& frame, std::vector<detect_result>& results,tracker& 
         if(dr.classId == 0) //person
         {
             objects.push_back(dr);
-            cv::rectangle(frame, dr.box, cv::Scalar(255, 0, 0), 2);
+            // comment
+            // cv::rectangle(frame, dr.box, cv::Scalar(255, 0, 0), 2);
             get_detections(DETECTBOX(dr.box.x, dr.box.y,dr.box.width,  dr.box.height),dr.confidence,  detections);
         }
     }
@@ -59,7 +60,9 @@ void test_deepsort(cv::Mat& frame, std::vector<detect_result>& results,tracker& 
         {
             DETECTBOX tmpbox = detections[k].tlwh;
             cv::Rect rect(tmpbox(0), tmpbox(1), tmpbox(2), tmpbox(3));
-            cv::rectangle(frame, rect, cv::Scalar(0,0,255), 4);
+            // comment
+            // cv::rectangle(frame, rect, cv::Scalar(0,0,255), 4);
+            
             // cvScalar的储存顺序是B-G-R，CV_RGB的储存顺序是R-G-B
 
             for(unsigned int k = 0; k < result.size(); k++)
@@ -119,7 +122,7 @@ int main(int argc, char *argv[])
     //-----------------------------------------------------------------------
     // 加载类别名称
     std::vector<std::string> classes;
-    std::string file="./coco_80_labels_list.txt";
+    std::string file="/home/faith/DeepSORT/coco_80_labels_list.txt";
     std::ifstream ifs(file);
     if (!ifs.is_open())
         CV_Error(cv::Error::StsError, "File " + file + " not found");
@@ -137,7 +140,7 @@ int main(int argc, char *argv[])
     detector->init(k_detect_model_path);
 
     std::cout<<"begin read video"<<std::endl;
-    cv::VideoCapture capture("./1.mp4");
+    cv::VideoCapture capture("/home/faith/test.mp4");
 
     if (!capture.isOpened()) {
         printf("could not read this video file...\n");
@@ -169,7 +172,7 @@ int main(int argc, char *argv[])
         std::cout<<classes.size()<<":"<<results.size()<<":"<<num_frames<<std::endl;
 
 
-        //test_deepsort(frame, results,mytracker);
+        // test_deepsort(frame, results,mytracker);
         test_bytetrack(frame, results,bytetracker);
 
         cv::imshow("YOLOv5-6.x", frame);

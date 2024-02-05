@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     detector->init(k_detect_model_path);
 
     std::vector<detect_result> results;
-    cv::Mat frame = cv::imread("1.jpg");
+    cv::Mat frame = cv::imread("/home/faith/coreml2onnx/images/11.jpg");
     //Second/Millisecond/Microsecond  秒s/毫秒ms/微秒us
     auto start = std::chrono::system_clock::now();
     detector->detect(frame, results);

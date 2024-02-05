@@ -9,10 +9,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 
-set(ONNXRUNTIME_DIR "/home/a/lib/onnxruntime-linux-x64-1.12.1")
+# set(ONNXRUNTIME_DIR "/home/faith/onnxruntime/test_c/lib")
+set(ONNXRUNTIME_DIR "/home/faith/onnxruntime/build")
+# set(ONNXRUNTIME_DIR "/home/faith/DeepSORT/onnxruntime-linux-x64-1.12.1/lib_1.12.1")
 
-include_directories("${ONNXRUNTIME_DIR}/include"
-    )
+# include_directories("${ONNXRUNTIME_DIR}/include"
+#     )
+include_directories(${CMAKE_SOURCE_DIR}/onnx_runtime_include)
+find_library(ONNXRUNTIME_LIBRARY onnxruntime ${ONNXRUNTIME_DIR})
+
+
 find_package(OpenCV 4 REQUIRED )
 
 
@@ -45,7 +51,9 @@ add_executable(DeepSORT
     tracker/bytetrack/src/utils.cpp
 
     main.cpp)
-target_link_libraries(DeepSORT PRIVATE "${ONNXRUNTIME_DIR}/lib/libonnxruntime.so" ${OpenCV_LIBS} Eigen3::Eigen)
+# target_link_libraries(DeepSORT PRIVATE "${ONNXRUNTIME_DIR}/libonnxruntime.so" ${OpenCV_LIBS} Eigen3::Eigen)
+# opencv_dnn
+target_link_libraries(DeepSORT PRIVATE ${OpenCV_LIBS} ${ONNXRUNTIME_LIBRARY} Eigen3::Eigen)
 
 
 
@@ -54,4 +62,4 @@ add_executable(test_detector
     detector/YOLOv5/src/YOLOv5Detector.cpp
 
     test_detector.cpp)
-target_link_libraries(test_detector PRIVATE  ${OpenCV_LIBS} Eigen3::Eigen)
+target_link_libraries(test_detector PRIVATE  ${OpenCV_LIBS} ${ONNXRUNTIME_LIBRARY} Eigen3::Eigen opencv_dnn)
