@@ -31,8 +31,18 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/include
     )
 
+include_directories(
+    ${CMAKE_SOURCE_DIR}/build
+)
+
+
+FILE(GLOB SRC_CODE ${CMAKE_SOURCE_DIR}/src/*)
+message(STATUS "SRC_CODE ${SRC_CODE}")
+
 
 add_executable(DeepSORT
+    ${SRC_CODE}
+
     detector/YOLOv5/src/YOLOv5Detector.cpp
 
     tracker/deepsort/src/FeatureTensor.cpp
@@ -50,17 +60,30 @@ add_executable(DeepSORT
     tracker/bytetrack/src/lapjv.cpp
     tracker/bytetrack/src/STrack.cpp
     tracker/bytetrack/src/utils.cpp
-
+    
     main.cpp)
 # target_link_libraries(DeepSORT PRIVATE "${ONNXRUNTIME_DIR}/libonnxruntime.so" ${OpenCV_LIBS} Eigen3::Eigen)
 # opencv_dnn
+
+
 target_link_libraries(DeepSORT PRIVATE ${OpenCV_LIBS} ${ONNXRUNTIME_LIBRARY} Eigen3::Eigen)
 
+# 在 add_library 命令中指定 STATIC 关键字，例如：add_library(mylib STATIC mylib.cpp)，这样就会生成一个静态库文件，如 libmylib.a 或 libmylib.lib 。
+# 在 target_link_libraries 命令中使用静态库的目标名或全路径，例如：target_link_libraries(myexe PRIVATE mylib) 或 target_link_libraries(myexe PRIVATE /path/to/libmylib.a)，这样就会将静态库链接到可执行文件中。
 
 
+
+add_definitions(-DEMBED_MODEL)
 
 add_executable(test_detector
     detector/YOLOv5/src/YOLOv5Detector.cpp
+    test_detector.cpp
 
-    test_detector.cpp)
+    ${SRC_CODE}
+    )
 target_link_libraries(test_detector PRIVATE  ${OpenCV_LIBS} ${ONNXRUNTIME_LIBRARY} Eigen3::Eigen opencv_dnn)
+
+
+
+# tools
+add_subdirectory(tools)

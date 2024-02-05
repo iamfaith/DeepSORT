@@ -3,14 +3,17 @@
 #include <vector>
 #include <iostream>
 #include <sys/time.h>
+#include <string>
+#include <cctype>
 
-static inline uint64_t time_get(void)
-{
-    struct timeval tv;
+#define utils_flip(arr)               \
+    for (int j = 0; j < 8; j++) \
+        arr ^= (1 << j);
 
-    gettimeofday(&tv, 0);
-    return (uint64_t)(tv.tv_sec * 1000000000ULL + tv.tv_usec * 1000);
-}
+std::string encode(const char *bytes_to_encode, unsigned int in_len);
+std::string decode(const std::string &encoded_string);
+
+uint64_t time_get(void);
 
 
 template <typename T>

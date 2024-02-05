@@ -3,13 +3,13 @@
     @Author      : shaoshengsong
     @Date        : 2022-09-23 02:52:41
 */
+#include "utils.h"
 #include <YOLOv5Detector.h>
 #include <iostream>
-#include "utils.h"
 
 void YOLOv5Detector::initOnnxModel() 
 {
-    size_t num_input_nodes = session_.GetInputCount();
+    size_t num_input_nodes = session_ptr()->GetInputCount();
     // std::vector<const char*> input_node_names(num_input_nodes);
 
     // std::vector<int64_t> input_node_dims;  // simplify... this model has only 1 input node [1, 3, 640, 640]
@@ -21,14 +21,14 @@ void YOLOv5Detector::initOnnxModel()
     // iterate over all input nodes
     for (int i = 0; i < num_input_nodes; i++) {
         // print input node names
-        auto input_name = session_.GetInputNameAllocated(i, allocator);
+        auto input_name = session_ptr()->GetInputNameAllocated(i, allocator);
         printf("Input %d : name=%s\n", i, input_name.get());
         // input_node_names[i] = input_name.get();
         // input_node_names.push_back(input_name.get());
         input_node_names.push_back("images");
 
         // print input node types
-        Ort::TypeInfo type_info = session_.GetInputTypeInfo(i);
+        Ort::TypeInfo type_info = session_ptr()->GetInputTypeInfo(i);
         auto tensor_info = type_info.GetTensorTypeAndShapeInfo();
 
         ONNXTensorElementDataType type = tensor_info.GetElementType();
@@ -42,13 +42,13 @@ void YOLOv5Detector::initOnnxModel()
     }
 
     printf("---------------------\n");
-    size_t num_output_nodes = session_.GetOutputCount();
+    size_t num_output_nodes = session_ptr()->GetOutputCount();
     printf("Number of output = %zu\n", num_output_nodes);
     for (int i = 0; i < num_output_nodes; i++) {
-        auto output_name = session_.GetOutputNameAllocated(i, allocator);
+        auto output_name = session_ptr()->GetOutputNameAllocated(i, allocator);
         printf("Output %d : name=%s\n", i, output_name.get());
 
-        Ort::TypeInfo type_info = session_.GetOutputTypeInfo(i);
+        Ort::TypeInfo type_info = session_ptr()->GetOutputTypeInfo(i);
         auto tensor_info = type_info.GetTensorTypeAndShapeInfo();
 
         ONNXTensorElementDataType type = tensor_info.GetElementType();
@@ -68,9 +68,7 @@ void YOLOv5Detector::initOnnxModel()
 
 }
 
-YOLOv5Detector::YOLOv5Detector(void) {
-    // output_names = {"output"}; //输出节点名
-}
+
 
 void YOLOv5Detector::init(std::string onnxpath)
 {
@@ -131,7 +129,7 @@ void YOLOv5Detector::detect(cv::Mat & frame, std::vector<detect_result> &results
     std::cout<<inputTensorSize << " " << input_node_dims.size() << " " << input_node_dims <<std::endl;
 
 
-    auto outputTensors =  session_.Run(Ort::RunOptions{nullptr}, input_node_names.data(), inputTensors.data(), 1, output_names, 1);
+    auto outputTensors =  session_ptr()->Run(Ort::RunOptions{nullptr}, input_node_names.data(), inputTensors.data(), 1, output_names, 1);
 
     auto* rawOutput = outputTensors[0].GetTensorData<float>();
     std::vector<int64_t> outputShape = outputTensors[0].GetTensorTypeAndShapeInfo().GetShape();
@@ -143,7 +141,7 @@ void YOLOv5Detector::detect(cv::Mat & frame, std::vector<detect_result> &results
     cv::Mat det_output(outputShape[1], outputShape[2], CV_32F, (void*)rawOutput);
 
 
-    // session_.Run(Ort::RunOptions{nullptr}, input_node_names.data(), inputTensors.data(), 1, output_names, &output_tensor_, 1);
+    // session_ptr()->Run(Ort::RunOptions{nullptr}, input_node_names.data(), inputTensors.data(), 1, output_names, &output_tensor_, 1);
 
     // this->net.setInput(blob);
     // cv::Mat preds = this->net.forward("output");//outputname

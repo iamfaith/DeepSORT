@@ -10,6 +10,9 @@
 #include <opencv2/imgproc.hpp>
 #include <fstream>
 #include <sstream>
+
+#include "utils.h"
+#include "onnx.mem.h"
 class detect_result
 {
 public:
@@ -25,7 +28,30 @@ public:
     void detect(cv::Mat &frame, std::vector<detect_result> &result);
     std::vector<std::string> classes_;
     void draw_frame(cv::Mat &frame, std::vector<detect_result> &results);
-    YOLOv5Detector();
+    YOLOv5Detector()
+    {
+
+        // Ort::Session session_tmp{env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr}};
+        // session_ = std::move(session_tmp);
+
+        // this->s = new Ort::Session(env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr});
+#ifdef EMBED_MODEL
+        std::string array = decode(model_data);
+        this->s = new Ort::Session(env, array.data(), model_data_length, Ort::SessionOptions{nullptr});
+#endif
+        // std::unique_ptr<Ort::Session> s = std::make_unique<Ort::Session>(env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr});
+    }
+
+    ~YOLOv5Detector()
+    {
+        delete s;
+        // 其他清理代码
+    }
+
+    Ort::Session *session_ptr()
+    {
+        return this->s;
+    }
 
 private:
     void initOnnxModel();
@@ -43,8 +69,10 @@ private:
     const int model_input_width_ = 640;
     const int model_input_height_ = 640;
 
+    // std::unique_ptr<Ort::Session> s;
     Ort::Env env;
-    Ort::Session session_{env, k_detect_model_path.c_str(), Ort::SessionOptions{nullptr}};
+    Ort::Session *s;
+    // Ort::Session session_{nullptr};
     std::vector<const char *> input_node_names;
     // Ort::Value input_tensor_{nullptr};
     std::vector<int64_t> input_node_dims;
