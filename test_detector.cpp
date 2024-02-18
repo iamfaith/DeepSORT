@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     cv::Mat frame = cv::imread(argv[1]);
     //Second/Millisecond/Microsecond  秒s/毫秒ms/微秒us
     auto start = std::chrono::system_clock::now();
+    auto t1 = time_get();
     detector->detect(frame, results);
     auto end = std::chrono::system_clock::now();
     auto detect_time =std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();//ms
@@ -36,6 +37,8 @@ int main(int argc, char *argv[])
     cv::imwrite(output_file, frame);
 
     results.clear();
+    printf("infer[%12.3f]ms  \n", (double) detect_time);
+    printf("infer[%12.3f]ms  \n", (double) (time_get() - t1) / 1000.0f / 1000.0f);
 
 
 
