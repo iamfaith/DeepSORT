@@ -61,7 +61,6 @@ private:
     void initOnnxModel();
 
 private:
-    cv::dnn::Net net;
 
     // nms threshold: 0.3 ~ 0.7，较高的值会保留更多的边界框，较低的值会剔除更多的边界框。
     // confidence threshold: 0.1 ~ 0.5，较高的值会提高检测的准确性，较低的值会提高检测的召回率。
